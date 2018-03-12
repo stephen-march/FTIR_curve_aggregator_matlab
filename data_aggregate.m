@@ -1,4 +1,4 @@
-function [] = data_aggregate( desired_output_filename,FTIR_dpt,file_dir )
+function [] = data_aggregate( desired_output_filename,FTIR_dpt,file_dir,plot_on )
 % DATA_AGGREGATE takes multiple text files produced from some data collection
 % hardware and aggregates them into a single csv file. 
 % 
@@ -13,11 +13,13 @@ function [] = data_aggregate( desired_output_filename,FTIR_dpt,file_dir )
 %                                 appended with "_aggregate.txt"
 %     FTIR_dpt -- =1 if using data from FTIR system. !=1 for any other data
 %     file_dir -- directory where the files to be aggregated are located    
-%     
+%     plot -- =1 to generate a sample plot of your data
+%
 % Examples:
 %     desired_output_filename = '2016_10_10_FTIR'
 %     FTIR_dpt = 1
 %     file_dir = 'C:\Users\stephen\Desktop\2016 fall\Bi for ESW\FTIR_Bi_for_ESW'
+%     plot_on = 1
 %     
 % Stephen-made dependencies/functions needed to run this function
 % 1. getdata.m
@@ -93,5 +95,24 @@ fclose(fid);
 
 % prints outputfile_name to the command line as a test
 type(outputfile_name)
+
+%% OPTIONAL: plot aggregate data
+if (plot_on == 1)
+% inspiration from http://www.mathworks.com/matlabcentral/answers/3240-plotting-an-unknown-number-of-lines-in-different-colours
+sz = size(aggregate_matrix);
+idy = (1:(sz(2)-1))+1; % get the specific columns indices for y-axis data
+figure1 = figure('Color',[1 1 1]);
+axes1 = axes('Parent',figure1,'FontWeight','bold','FontSize',12);
+plot1 = plot(aggregate_matrix(:,1),aggregate_matrix(:,idy));
+set(plot1,'LineWidth',3);
+ymin = 0;
+ymax = 1;
+xmin = min(aggregate_matrix(:,1));
+xmax = max(aggregate_matrix(:,1));
+axis([xmin,xmax,ymin,ymax]);
+xlabel('Wavenumber (cm^{-1})','FontWeight','bold','FontSize',14);
+ylabel('Reflectance','FontWeight','bold','FontSize',14);
+legend(header_vector{:,idy});
+end
 
 end

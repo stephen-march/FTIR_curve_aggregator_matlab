@@ -30,7 +30,7 @@ outputfile_name = strcat(desired_output_filename,'_aggregate.txt');
 
 if (FTIR_dpt == 1)
     %% Regex parameters
-    FTIR_dpt_pattern = '(\d+\.\d+),(\d+\.\d+)';
+    FTIR_dpt_pattern = '(\d+\.\d+),(-\d+|\d+\.\d+)';
     struct_pattern = '*.dpt';
     regex_pattern = FTIR_dpt_pattern;
     abscissa_label = 'Wavenumber (1/cm)';
